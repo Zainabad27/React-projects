@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TodoProvider } from './contexts/index.js';
 import TodoForm from './components/TodoForm.jsx';
+import TodoItem from './components/TodoItem.jsx';
 import './App.css'
 
 function App() {
@@ -17,23 +18,35 @@ function App() {
     settodo((prev) => [Todo, ...prev]);
   }
   const edittodo = (id, text) => {
-    settodo((prevtodo)=>prevtodo.map((single_todo) =>
+    settodo((prevtodo) => prevtodo.map((single_todo) =>
       single_todo.id === id
         ?
         { ...single_todo, tododata: text } : single_todo
     ))
   }
   const deletetodo = (id) => {
-    settodo((prevtodo)=>prevtodo.filter((single_todo) => single_todo.id !== id))
+    settodo((prevtodo) => prevtodo.filter((single_todo) => single_todo.id !== id))
   };
 
   const completetodo = (id) => {
 
-    settodo((prevtodo)=>prevtodo.map((single_todo) => single_todo.id === id ? { ...single_todo, completed: !single_todo.completed } : single_todo))
-
-
+    settodo((prevtodo) => prevtodo.map((single_todo) => single_todo.id === id ? { ...single_todo, completed: !single_todo.completed } : single_todo))
 
   };
+
+
+  useEffect(() => {
+    const todos = JSON.parse(localStorage.getItem("todos"));
+
+    if (todos && todos.length > 0) {
+      settodo(todos);
+    }
+  }, [])
+
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todo))
+  }, [todo]);
 
 
   return (
@@ -46,6 +59,11 @@ function App() {
           </div>
           <div className="flex flex-wrap gap-y-3">
             {/*Loop and Add TodoItem here */}
+            {todo.map((single_todo) => (
+              <div key={single_todo.id} className='w-full'>
+                <TodoItem  todo={single_todo} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

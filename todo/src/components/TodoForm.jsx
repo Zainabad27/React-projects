@@ -7,13 +7,16 @@ function TodoForm() {
 
     const submit_todo = (e) => {
         e.preventDefault();
-        // setindividual_todo_text(e.target.value);
-        
+        if(individual_todo_text===""){
+            return;
+        }
+
         addtodo(individual_todo_text);
+        setindividual_todo_text("");
     }
 
     return (
-        <form className="flex">
+        <form onSubmit={submit_todo} className="flex">
             <input
                 type="text"
                 placeholder="Write Todo..."
@@ -22,7 +25,7 @@ function TodoForm() {
                 onChange={(e) => { setindividual_todo_text(e.target.value) }}
 
             />
-            <button type="submit" onSubmit={submit_todo} className="rounded-r-lg px-3 py-1 bg-green-600 text-white shrink-0">
+            <button type="submit" className="rounded-r-lg px-3 py-1 bg-green-600 text-white shrink-0">
                 Add
             </button>
         </form>
