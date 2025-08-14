@@ -1,14 +1,13 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { act } from "react";
 
 const todoslice = createSlice({
-    name: todo,
+    name: 'todo',
     initialState: {
-        todos: [{ id: nanoid(), todoetext: "hello world", completed: false }]
+        todos: []
     },
     reducers: {
         addtodo: (state, action) => {
-            const todo = { id: nanoid(), todoetext: action.payload, completed: false };
+            const todo = { id: nanoid(), todotext: action.payload, completed: false };
 
             state.todos.push(todo);
         },
@@ -24,7 +23,7 @@ const todoslice = createSlice({
             const text = action.payload.text;
 
             state.todos= state.todos.map((single_todo) => (
-                single_todo.id === id ? { ...single_todo, todoetext: text } : single_todo
+                single_todo.id === id ? { ...single_todo, todotext: text } : single_todo
             ));
 
         },
